@@ -1,6 +1,7 @@
 package args
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -61,3 +62,24 @@ func TestParse(t *testing.T) {
 		[]DrawInfo{{"Hello", Thinkertoy}, {"There", Shadow}, {"World", Standard}},
 	)
 }
+
+// func TestInspectFlagAndFile(t *testing.T) {
+// 	testCasesInput := []string{
+// 		"--output=file.txt",
+// 		"--output=file",
+// 		"--output=mydata.txt",
+// 		"file",
+// 		"file.txt",
+// 		"",
+// 		// `\s+`,
+// 	}
+
+// 	for _, testcase := range testCasesInput {
+// 		output, testError := InspectFlagAndFile(testcase)
+// 		if testError != nil {
+// 			t.Errorf("error processing input %q: %v", testcase, testError)
+//             continue
+// 		}
+// 		fmt.Printf("got %q\n", output)
+// 	}
+// }
