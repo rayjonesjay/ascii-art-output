@@ -3,6 +3,7 @@ package args
 import (
 	"fmt"
 	"os"
+	"regexp"
 )
 
 const (
@@ -17,44 +18,65 @@ type DrawInfo struct {
 	Style string
 }
 
-// Parse Given commandline arguments, excluding the program name, returns a list of all the extracted
-// text to be drawn with their respective styles
+//Takes the flag '--output=file.txt' together with text and style to be printed
 func Parse(args []string) []DrawInfo {
-	l := len(args)
 
-	if l < 1 {
-		// Program didn't receive any text to be printed, exit with usage instructions
+	length_of_arguments := len(args)
+
+	flagAndFile := args[0]
+	inspectFlagAndFile(flagAndFile)
+
+	args = args[1:]
+	length_of_arguments = (length_of_arguments - 1)
+
+	if length_of_arguments < 1 {
+
 		return nil
-	} else if l == 1 {
-		// Program received some text to be printed, use the standard banner to print the ASCII-ART
+
+	} else if length_of_arguments == 1 {
+
 		text := args[0]
 		return []DrawInfo{{Text: Escape(text), Style: Standard}}
+
 	} else {
 
 		// Program received a series of texts to be printed, with banner style specified for consecutive texts
-		var out []DrawInfo
+		var finalOutput []DrawInfo
 
-		for textPosition := 0; textPosition < l; textPosition += 2 {
+		for textPosition := 0; textPosition < length_of_arguments; textPosition += 2 {
 			text := args[textPosition]
 
 			// default style is Standard
 			style := Standard
 
 			// check if style is provided
-			if textPosition+1 < l {
+			if textPosition+1 < length_of_arguments {
+
 				// style = args[textPosition]
 				switch args[textPosition+1] {
 
 				case Standard, Shadow, Thinkertoy:
 					style = args[textPosition+1]
+
 				default:
 					_, _ = fmt.Fprintf(os.Stderr, "Style argument not recognized! Passed -> %s Expected -> shadow|standard|thinkertoy\n", args[textPosition+1])
-					os.Exit(1)
+					os.Exit(0)
 				}
+
 			}
-			out = append(out, DrawInfo{Text: Escape(text), Style: style})
+			finalOutput = append(finalOutput, DrawInfo{Text: Escape(text), Style: style})
 		}
 
-		return out
+		return finalOutput
 	}
+}
+
+
+//checks if the flag passed is valid --output=file.txt
+func inspectFlagAndFile(flagAndFile string) {
+
+	flagPattern := `^--output=w+.txt{1,255}`
+	
+	
+
 }
