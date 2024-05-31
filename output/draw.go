@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"strings"
 	"ascii/args"
+	"os"
 )
 
 // Given a series of [args.DrawInfo] items, extract the drawing information and generate the expected graphics
@@ -40,7 +41,7 @@ func Draw(all []args.DrawInfo) {
 		all[i] = d
 	}
 	out := graphics.Draw(all)
-	fmt.Print(out)
+	fmt.Fprintln(os.Stdout,out)
 	if hasBell {
 		// Some ASCII bell character was specified, play a beep sound
 		sound.Beep()

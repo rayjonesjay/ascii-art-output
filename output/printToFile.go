@@ -1,2 +1,6 @@
 package output 
 
+
+func SaveToFile(){
+
+}
